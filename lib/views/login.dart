@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jt_chat_front/views/home.dart';
 import 'package:jt_chat_front/views/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -123,7 +124,12 @@ class SubmitButton extends StatelessWidget {
             textColor: Colors.white,
             minWidth: double.infinity,
             height: 58,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context)=>const HomePage())
+              );
+            },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             child: const Text(
