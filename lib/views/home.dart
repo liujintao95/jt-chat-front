@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jt_chat_front/views/chat.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -113,21 +116,50 @@ class ContactList extends StatelessWidget {
   }
 }
 
-class ContactItem extends StatelessWidget {
+class ContactItem extends StatefulWidget {
   const ContactItem({super.key});
+
+  @override
+  State<ContactItem> createState() => _ContactItemState();
+
+  
+}
+
+class _ContactItemState extends State<ContactItem> {
+  Color currentColor = Colors.white;
+
+  void _onItemTapped() {
+    const timeout = Duration(milliseconds: 300);
+    setState(() {
+      currentColor = const Color.fromARGB(255, 219, 219, 219);
+    });
+    Timer(timeout, () {
+      setState(() {
+        currentColor =  Colors.white;
+        Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context)=>const ChatPage())
+        );
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: const Row(
-        children: [
-          CircleImg(),
-          NameAndMessage(),
-          TimeAndCount()
-        ],
+      child: Container(
+        color: currentColor,
+        child:  const Row(
+          children: [
+            CircleImg(),
+            NameAndMessage(),
+            TimeAndCount()
+          ],
+        )
       ),
       onTap: () {
         print('Container tapped!');
+        _onItemTapped();
       },
     );
   }
