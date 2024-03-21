@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jt_chat_front/views/chat.dart';
 
 class HomePage extends StatefulWidget {
@@ -138,7 +137,7 @@ class _ContactItemState extends State<ContactItem> {
         currentColor =  Colors.white;
         Navigator.push(
           context, 
-          MaterialPageRoute(builder: (context)=>const ChatPage())
+          MaterialPageRoute(builder: (context)=> const ChatPage())
         );
       });
     });
@@ -158,7 +157,6 @@ class _ContactItemState extends State<ContactItem> {
         )
       ),
       onTap: () {
-        print('Container tapped!');
         _onItemTapped();
       },
     );
