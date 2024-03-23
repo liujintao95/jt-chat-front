@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:jt_chat_front/views/add.dart';
 import 'package:jt_chat_front/views/chat.dart';
+import 'package:jt_chat_front/views/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -70,20 +74,43 @@ class SearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      style: const TextStyle(fontSize: 14, color: Colors.black87),
-      decoration: InputDecoration(
-          fillColor: Colors.grey[80],
-          filled: true,
-          isCollapsed: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          hintText: "搜索",
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(color: Colors.white, width: 0)),
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
+            decoration: InputDecoration(
+              fillColor: Colors.grey[80],
+              filled: true,
+              isCollapsed: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              hintText: "搜索",
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(color: Colors.white, width: 0)
+              ),
+              border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 40,
+          child: IconButton(
+            icon: const Icon(
+              Icons.add
+            ),
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context)=> const AddPage())
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -284,9 +311,92 @@ class UserContentBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-      child: Text("这是用户页面"),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.grey[200],
+            child: const Row(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage('https://himg.bdimg.com/sys/portraitn/item/public.1.ae881e68.G2PBqIASRKyCsyWiY1HCQQ'),
+                ),
+                SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '北风忆夕',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      '用户ID: 123456',
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SettingItem(icon: Icons.person, title: '个人信息'),
+          const Divider(indent: 60,),
+          const SettingItem(icon: Icons.lock, title: '账号与安全'),
+          const Divider(indent: 60,),
+          const SettingItem(icon: Icons.notifications, title: '消息通知'),
+          const Divider(indent: 60,),
+          const LogOutButton()
+        ],
+      ),
     );
+  }
+}
+
+class SettingItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const SettingItem({super.key, required this.icon, required this.title,});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      trailing: Icon(Icons.arrow_forward_ios),
+      onTap: ()=>{},
+    );
+  }
+}
+
+class LogOutButton extends StatelessWidget {
+  const LogOutButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: SelectionContainer.disabled(
+          child: MaterialButton(
+            color: Colors.cyan,
+            textColor: Colors.white,
+            minWidth: double.infinity,
+            height: 58,
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context)=>const LoginPage())
+              );
+            },
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            child: const Text(
+              "退出登录",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+        ));
   }
 }
