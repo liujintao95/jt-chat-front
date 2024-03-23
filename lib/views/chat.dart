@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -17,7 +18,8 @@ class _ChatPageState extends State<ChatPage> {
         messages.add(
           MessageTile(
             message: messageEditingController.text,
-            sendByMe: "" == "123",
+            date: DateFormat("MM-dd HH:mm").format(DateTime.now()),
+            sendByMe: "123" == "123",
           )
         );
         
@@ -34,8 +36,11 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Stack(
         children: [
-          ListView(
-            children: messages,
+          ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return messages[index];
+            }
           ),
           Container(
             alignment: Alignment.bottomCenter,
@@ -89,45 +94,55 @@ class _ChatPageState extends State<ChatPage> {
 
 class MessageTile extends StatelessWidget {
   final String message;
+  final String date;
   final bool sendByMe;
 
-  const MessageTile({super.key, required this.message, required this.sendByMe});
+  const MessageTile({super.key, required this.message, required this.date, required this.sendByMe});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
-      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: sendByMe
-            ? const EdgeInsets.only(left: 30)
-            : const EdgeInsets.only(right: 30),
-        padding:
-            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-        decoration: BoxDecoration(
-            borderRadius: sendByMe
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23))
-                : const BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
-            gradient: LinearGradient(
-              colors: sendByMe
-                  ? [const Color.fromRGBO(149,236,105,1), const Color.fromRGBO(149,236,105,1)]
-                  : [const Color.fromRGBO(230,230,230,1), const Color.fromRGBO(230,230,230,1)],
-            )),
-        child: Text(message,
-            textAlign: TextAlign.start,
-            style: const TextStyle(
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
+          alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+          child: Text(date, textAlign: TextAlign.left,),
+        ),
+        Container(
+          padding: EdgeInsets.only(
+              top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+          alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+          child: Container(
+            margin: sendByMe
+                ? const EdgeInsets.only(left: 30)
+                : const EdgeInsets.only(right: 30),
+            padding:
+                const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+            decoration: BoxDecoration(
+                borderRadius: sendByMe
+                    ? const BorderRadius.only(
+                        topLeft: Radius.circular(23),
+                        topRight: Radius.circular(23),
+                        bottomLeft: Radius.circular(23))
+                    : const BorderRadius.only(
+                        topLeft: Radius.circular(23),
+                        topRight: Radius.circular(23),
+                        bottomRight: Radius.circular(23)),
+                gradient: LinearGradient(
+                  colors: sendByMe
+                      ? [const Color.fromRGBO(149,236,105,1), const Color.fromRGBO(149,236,105,1)]
+                      : [const Color.fromRGBO(230,230,230,1), const Color.fromRGBO(230,230,230,1)],
+                )),
+            child: Text(message,
+              textAlign: TextAlign.start,
+              style: const TextStyle(
                 color: Color.fromARGB(255, 15, 15, 15),
                 fontSize: 16,
-                fontFamily: 'OverpassRegular',
-                fontWeight: FontWeight.w300)),
-      ),
+              )
+            ),
+          ),
+        )
+      ],
     );
   }
 }
